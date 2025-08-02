@@ -59,3 +59,4 @@ part_time_*.csv
 
 # Logs
 *.log
+.venv

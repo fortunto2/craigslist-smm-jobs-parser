@@ -4,7 +4,7 @@ This project uses Python, managed with [uv](https://github.com/astral-sh/uv), an
 
 To install dependencies with uv:
 ```sh
-uv pip install -r requirements.txt
+uv sync
 ```
 
 ## Usage
@@ -92,7 +92,7 @@ This disables keyword filtering and collects all available jobs (up to `max_jobs
 
 #### Quick Daily Check (Recommended):
 ```sh
-python azalia_search.py
+uv run python azalia_search.py
 ```
 **Default settings (perfect for 18-year-old student):**
 - **Focus:** Chicago city only (no suburbs/remote distractions)
@@ -103,7 +103,7 @@ python azalia_search.py
 
 #### Super Quick Monitor Mode:
 ```sh
-python azalia_search.py --monitor
+uv run python azalia_search.py --monitor
 ```
 **Monitor mode features:**
 - ⚡ **Ultra-fast:** Only today's jobs, 30 max per section
@@ -117,27 +117,27 @@ Perfect for **daily morning routine** or **automated checks**.
 
 **Weekly comprehensive scan:**
 ```sh
-python azalia_search.py --days 7 --max_jobs 100 --sections "crg,cpg,mar,med"
+uv run python azalia_search.py --days 7 --max_jobs 100 --sections "crg,cpg,mar,med"
 ```
 
 **Part-time focused search:**
 ```sh
-python azalia_search.py --keywords "part-time,intern,freelance,student,social media,content creator,tiktok,instagram" --days 3
+uv run python azalia_search.py --keywords "part-time,intern,freelance,student,social media,content creator,tiktok,instagram" --days 3
 ```
 
 **Include suburbs when needed:**
 ```sh
-python azalia_search.py --locations "chicago,naperville,evanston,remote" --days 14
+uv run python azalia_search.py --locations "chicago,naperville,evanston,remote" --days 14
 ```
 
 **CSV output for analysis:**
 ```sh
-python azalia_search.py --csv --output weekly_opportunities.csv --days 7
+uv run python azalia_search.py --csv --output weekly_opportunities.csv --days 7
 ```
 
 **Silent background monitoring:**
 ```sh
-python azalia_search.py --quiet --days 1 --output today_jobs.json
+uv run python azalia_search.py --quiet --days 1 --output today_jobs.json
 ```
 
 #### Command-line Options:
