@@ -4,7 +4,7 @@ This project uses Python, managed with [uv](https://github.com/astral-sh/uv), an
 
 To install dependencies with uv:
 ```sh
-uv sync
+uv pip install -r requirements.txt
 ```
 
 ## Usage
@@ -34,8 +34,8 @@ The universal spider [`chicago_jobs`](craigslist_jobs/craigslist_jobs/spiders/ch
 
 **Gigs (freelance/part-time):**
 - `ggg` – All Gigs (general search)
-- `crg` – Creative gigs (freelance video, content creation)
-- `cpg` – Computer gigs (SMM specialists, social media admins)
+- `crg` – Creative gigs (freelance video, content creation) **← BEST for part-time SMM**
+- `cpg` – Computer gigs (SMM specialists, social media admins) **← BEST for tech-savvy creators**
 - `dmg` – Domestic gigs (rarely relevant)
 
 **Basic usage:**
@@ -88,60 +88,81 @@ This disables keyword filtering and collects all available jobs (up to `max_jobs
 
 ### Azalia SMM/Media Search
 
-**Enhanced script specifically designed for SMM/video/media job hunting.**
+**🎯 Optimized script for daily SMM/media job monitoring in Chicago.**
 
-To search for SMM/media positions across relevant Craigslist sections:
-
+#### Quick Daily Check (Recommended):
 ```sh
 python azalia_search.py
 ```
+**Default settings (perfect for 18-year-old student):**
+- **Focus:** Chicago city only (no suburbs/remote distractions)
+- **Sections:** Creative gigs (crg), Computer gigs (cpg), Marketing (mar)
+- **Period:** Last 7 days
+- **Keywords:** SMM + part-time focused terms
+- **Speed:** 50 jobs max per section for quick scanning
 
-This will search in multiple relevant sections (`mar`, `med`, `art`, `crg`, `cpg`) with SMM/media keywords and include Chicago suburbs.
-
-**Key features:**
-- **Multi-section search**: Automatically searches in Marketing (mar), Media (med), Art/Design (art), Creative gigs (crg), and Computer gigs (cpg)
-- **Suburb coverage**: Includes Chicago, Naperville, Arlington Heights, Oak Park, Evanston, Forest Park, and remote positions
-- **SMM-focused keywords**: Optimized for social media, content creation, and video positions
-- **Deduplication**: Removes duplicate postings found across multiple sections
-- **Flexible output**: Supports both JSON and CSV formats
-
-**Advanced usage examples:**
-
-**Part-time SMM search (recommended for 18-year-old students):**
+#### Super Quick Monitor Mode:
 ```sh
-python azalia_search.py --keywords "part-time,social media,content creator,tiktok,instagram,video editor,freelance,intern" --days 30 --max_jobs 150
+python azalia_search.py --monitor
+```
+**Monitor mode features:**
+- ⚡ **Ultra-fast:** Only today's jobs, 30 max per section
+- 🎯 **Focused:** Only crg + cpg sections (most active for part-time)
+- 🤫 **Quiet:** Minimal output, just results count
+- 📁 **Auto-named:** Saves to `monitor_jobs.json`
+
+Perfect for **daily morning routine** or **automated checks**.
+
+#### Advanced Usage:
+
+**Weekly comprehensive scan:**
+```sh
+python azalia_search.py --days 7 --max_jobs 100 --sections "crg,cpg,mar,med"
 ```
 
-**Creative gigs only:**
+**Part-time focused search:**
 ```sh
-python azalia_search.py --sections "crg,cpg" --keywords "video,content,social media,tiktok,instagram" --days 30
+python azalia_search.py --keywords "part-time,intern,freelance,student,social media,content creator,tiktok,instagram" --days 3
 ```
 
-**Broad suburbs search:**
+**Include suburbs when needed:**
 ```sh
-python azalia_search.py --locations "chicago,naperville,arlington heights,oak park,evanston,schaumburg,cicero,remote" --days 30
+python azalia_search.py --locations "chicago,naperville,evanston,remote" --days 14
 ```
 
-**CSV output for spreadsheet analysis:**
+**CSV output for analysis:**
 ```sh
-python azalia_search.py --csv --output smm_opportunities.csv --days 30
+python azalia_search.py --csv --output weekly_opportunities.csv --days 7
 ```
 
-**Maximal-inclusion (wildcard) run—extract all relevant jobs:**
+**Silent background monitoring:**
 ```sh
-python azalia_search.py --keywords "" --max_jobs 500 --days 30
+python azalia_search.py --quiet --days 1 --output today_jobs.json
 ```
-- Leaving `--keywords ""` empty disables keyword filtering (universal mode).
-- Searches across all specified sections and locations.
-- Use `--max_jobs` to control volume (default is 200 per section).
 
-**Command-line options:**
-- `--keywords, -k`: Keywords to search for (default: comprehensive SMM/media terms)
-- `--sections, -s`: Craigslist sections to search (default: mar,med,art,crg,cpg)
-- `--days, -d`: Days back to search (default: 30)
-- `--locations, -l`: Locations to include (default: Chicago + suburbs + remote)
-- `--max_jobs, -m`: Max jobs per section (default: 200)
-- `--output, -o`: Output filename (default: azalia_smm_jobs.json)
-- `--csv`: Output in CSV format instead of JSON
+#### Command-line Options:
+- `--keywords, -k`: Search terms (default: comprehensive SMM + part-time terms)
+- `--sections, -s`: Craigslist sections (default: crg,cpg,mar)
+- `--days, -d`: Days back to search (default: 7)
+- `--locations, -l`: Locations to include (default: chicago only)
+- `--max_jobs, -m`: Max jobs per section (default: 50)
+- `--output, -o`: Output filename (default: daily_smm_jobs.json)
+- `--csv`: Output in CSV format
+- `--quiet, -q`: Minimal output
+- `--monitor`: Ultra-fast mode for daily checks
+
+#### Key Features:
+- 🚀 **Fast by default**: Optimized for quick daily monitoring
+- 🎯 **Part-time focused**: Targets student-friendly opportunities
+- 📍 **Chicago-centric**: No suburban noise unless requested
+- 📊 **Smart preview**: Shows latest 3 jobs in terminal
+- 🔄 **Auto-sorted**: Newest jobs first
+- ✨ **Clean output**: Beautiful formatting and emojis
+
+#### Perfect for:
+- **Daily job hunting routine** for 18-year-old students
+- **Quick morning checks** before classes
+- **Automated monitoring** scripts
+- **Part-time opportunity tracking**
 
 The script outputs comprehensive job listings suitable for part-time SMM/video/media work, with no special setup required.
