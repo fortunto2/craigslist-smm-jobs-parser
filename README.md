@@ -36,6 +36,8 @@ The universal spider [`chicago_jobs`](craigslist_jobs/craigslist_jobs/spiders/ch
 - `ggg` – All Gigs (general search)
 - `crg` – Creative gigs (freelance video, content creation) **← BEST for part-time SMM**
 - `cpg` – Computer gigs (SMM specialists, social media admins) **← BEST for tech-savvy creators**
+- `tlg` – Talent gigs (influencers, content creators, casting) **← NEW: for creator/influencer roles**
+- `lbg` – Labor gigs (some media production work)
 - `dmg` – Domestic gigs (rarely relevant)
 
 **Basic usage:**
@@ -95,11 +97,11 @@ This disables keyword filtering and collects all available jobs (up to `max_jobs
 uv run python azalia_search.py
 ```
 **Default settings (perfect for 18-year-old student):**
-- **Focus:** Chicago city only (no suburbs/remote distractions)
-- **Sections:** Creative gigs (crg), Computer gigs (cpg), Marketing (mar)
-- **Period:** Last 7 days
+- **Focus:** Chicago city + key suburbs (Forest Park, Arlington Heights, Oak Park, Rogers Park)
+- **Sections:** Creative gigs (crg), Computer gigs (cpg), Marketing (mar), Talent gigs (tlg)
+- **Period:** Last 14 days
 - **Keywords:** SMM + part-time focused terms
-- **Speed:** 50 jobs max per section for quick scanning
+- **Speed:** 100 jobs max per section for comprehensive coverage
 
 #### Super Quick Monitor Mode:
 ```sh

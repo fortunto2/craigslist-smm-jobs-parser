@@ -4,9 +4,9 @@
 Azalia SMM/Media Job Search Script
 ----------------------------------
 - Search Chicago SMM/media jobs in relevant Craigslist sections
-- Supports multiple sections: mar (Marketing), med (Media), art (Art/Design), crg (Creative gigs), cpg (Computer gigs)
-- Focused on Chicago city only by default (no suburbs or remote)
-- Optimized for quick monitoring and daily job checks
+- Supports multiple sections: mar (Marketing), crg (Creative gigs), cpg (Computer gigs), tlg (Talent gigs)
+- Covers Chicago city + key suburbs with active SMM opportunities
+- Optimized for comprehensive monitoring and daily job checks
 """
 
 import sys
@@ -33,8 +33,8 @@ def parse_args():
         "--sections",
         "-s",
         type=str,
-        default="crg,cpg,mar",
-        help="Comma-separated Craigslist sections to search (default: crg,cpg,mar - most relevant for part-time)",
+        default="crg,cpg,mar,tlg",
+        help="Comma-separated Craigslist sections to search (default: crg,cpg,mar,tlg - comprehensive SMM/media coverage)",
     )
     parser.add_argument(
         "--days",
@@ -47,8 +47,8 @@ def parse_args():
         "--locations",
         "-l",
         type=str,
-        default="chicago",
-        help="Comma-separated locations to include (default: chicago only - no suburbs or remote)",
+        default="chicago,forest park,arlington heights,oak park,rogers park",
+        help="Comma-separated locations to include (default: chicago + key suburbs with active SMM opportunities)",
     )
     parser.add_argument(
         "--max_jobs",
