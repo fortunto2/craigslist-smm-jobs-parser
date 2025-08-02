@@ -145,18 +145,10 @@ class ChicagoJobsSpider(scrapy.Spider):
 
     def _extract_job_basic_info(self, job):
         """Extract basic job information using multiple selector strategies"""
-        # Strategy 1: Modern structure
-        title = (
-            job.css("div.title a::text").get() or job.css("a.cl-app-anchor::text").get()
-        )
-        url = (
-            job.css("div.title a::attr(href)").get()
-            or job.css("a.cl-app-anchor::attr(href)").get()
-        )
-        location_raw = (
-            job.css("div.details > div.location::text").get()
-            or job.css("div.result-meta .result-hood::text").get()
-        )
+        # Strategy 1: Modern structure - more specific selectors
+        title = job.css("div.title a::text").get()
+        url = job.css("div.title a::attr(href)").get()
+        location_raw = job.css("div.details > div.location::text").get()
 
         # Strategy 2: Alternative structure (GoTrained tutorial style)
         if not title:
@@ -166,9 +158,41 @@ class ChicagoJobsSpider(scrapy.Spider):
         if not location_raw:
             location_raw = job.css(".result-hood::text").get()
 
+        # Strategy 3: More aggressive selectors
+        if not title:
+            # Get text from the first link that's not empty
+            all_links = job.css("a::text").getall()
+            for link_text in all_links:
+                clean_text = link_text.strip()
+                if clean_text and len(clean_text) > 3:  # Ignore very short texts
+                    title = clean_text
+                    break
+
+        if not url:
+            url = job.css("a::attr(href)").get()
+
+        # Clean up title
+        if title:
+            title = title.strip()
+            # If title is still empty after strip, try to get it from URL
+            if not title and url:
+                # Extract title from URL as fallback
+                url_parts = url.split("/")
+                if len(url_parts) > 1:
+                    title_part = (
+                        url_parts[-2]
+                        if url_parts[-1].endswith(".html")
+                        else url_parts[-1]
+                    )
+                    title = title_part.replace("-", " ").title()
+
         # Clean up location
-        location_clean = (location_raw or "").strip(" ()") if location_raw else ""
-        if not location_clean or not location_clean.strip():
+        if location_raw:
+            location_clean = location_raw.strip().strip("()")
+        else:
+            location_clean = ""
+
+        if not location_clean:
             location = "N/A"
         elif "remote" in location_clean.lower():
             location = "remote"
@@ -179,8 +203,11 @@ class ChicagoJobsSpider(scrapy.Spider):
         if url and url.startswith("/"):
             url = "https://chicago.craigslist.org" + url
 
+        # Debug logging
+        self.logger.debug(f"Final: title='{title}', url='{url}', location='{location}'")
+
         return {
-            "title": title or "",
+            "title": title or "Unknown Job",
             "url": url,
             "location": location,
             "posted_date": None,
@@ -224,12 +251,27 @@ class ChicagoJobsSpider(scrapy.Spider):
             self.logger.warning(f"Blocked or error on detail page: {response.url}")
             return
 
+        # Get title from detail page (more reliable than list page)
         title = (
-            response.meta["title"]
-            or response.css("span#titletextonly::text").get()
+            response.css("span#titletextonly::text").get()
             or response.css("h1.postingtitle::text").get()
+            or response.css("h1::text").get()
+            or response.meta["title"]
             or ""
         )
+
+        # Clean up title
+        if title:
+            title = title.strip()
+
+        # If still no good title, extract from URL
+        if not title or title == "Unknown Job" or len(title.strip()) < 3:
+            url_parts = response.url.split("/")
+            if len(url_parts) > 1:
+                title_part = (
+                    url_parts[-2] if url_parts[-1].endswith(".html") else url_parts[-1]
+                )
+                title = title_part.replace("-", " ").replace("_", " ").title()
 
         job_url = response.meta["url"] or response.url
         location = response.meta["location"]

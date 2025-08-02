@@ -26,7 +26,7 @@ def parse_args():
         "--keywords",
         "-k",
         type=str,
-        default="social media,content creator,tiktok,instagram,video editor,videographer,reels,short-form video,UGC creator,digital marketing,smm,content,marketing,creative,design,photo,part-time,intern,freelance",
+        default="social media,content creator,tiktok,instagram,video editor,videographer,reels,short-form video,UGC creator,digital marketing,smm,content,marketing,creative,design,photo,part-time,intern,freelance,photographer,media,social,video,edit",
         help="Comma-separated keywords for job search (default: comprehensive SMM/media + part-time terms)",
     )
     parser.add_argument(
@@ -40,8 +40,8 @@ def parse_args():
         "--days",
         "-d",
         type=int,
-        default=7,
-        help="Only include jobs posted within this many days (default: 7 for daily monitoring)",
+        default=14,
+        help="Only include jobs posted within this many days (default: 14 for comprehensive monitoring)",
     )
     parser.add_argument(
         "--locations",
@@ -54,8 +54,8 @@ def parse_args():
         "--max_jobs",
         "-m",
         type=int,
-        default=50,
-        help="Maximum number of jobs to collect per section (default: 50 for quick monitoring)",
+        default=100,
+        help="Maximum number of jobs to collect per section (default: 100 for thorough scanning)",
     )
     parser.add_argument(
         "--output",
